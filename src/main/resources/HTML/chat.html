@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+
+        let w;
+
+        function init1() {
+            let uid = 123;
+            w = new WebSocket("ws://localhost:8081/websocket");
+
+            w.onopen = function () {
+                console.log("连接成功")
+            };
+
+            w.onmessage = function (e) {
+                console.log(e.data);
+                document.getElementById("d1").innerHTML += e.data + "<br/>"
+            };
+
+            w.onclose = function () {
+                console.log("关闭连接")
+            }
+        }
+
+        function send() {
+            console.log("提交");
+            // 获取输入的内容
+            let a = document.getElementById("t1").value;
+            // 清除输入的内容
+            document.getElementById("t1").value = "";
+
+            // 提交的数据 JSON
+            let json = {"mContent":"你好！我是亚托克斯","mFromUserid":1,"mToUserid":1};
+            // 将 JSON 数据转换成 String 类型 并发送给服务器
+            w.send(JSON.stringify(json));
+        }
+
+        function ABC() {
+            console.log("关闭连接");
+            w.close()
+        }
+    </script>
+</head>
+<body onload="init1()">
+<div id="d1" style="width: 90%;margin-left: 5%;border: solid 1px;height: 500px;">
+
+</div>
+<div style="width: 90%;margin-left: 5%;border: solid 1px;height: 90px;">
+    <input type="text" id="t1"/>
+    <button onclick="send()">提交</button>
+    <button onclick="ABC()">关闭连接</button>
+</div>
+</body>
+</html>
